@@ -25,7 +25,7 @@ tail -n 3 /etc/group
 
 La comanda groupadd crea un grup nou i li assigna el primer GID lliure a partir de 1000. Els grups es guarden al fitxer /etc/group, amb el format nom:contrasenya:GID:membres. Amb tail -n 3 mostro les tres últimes línies del fitxer, que són els grups que acabo de crear.
 
-![Captura 2026-10-07 181129](Captura1.png)
+![Captura 2026-10-07 181129](/Imatges/Captura1.png)
 
 També ho he comprovat amb la comanda getent:
 
@@ -33,7 +33,7 @@ També ho he comprovat amb la comanda getent:
 getent group devs sysadmin auditor
 ```
 
-![Captura 2026-10-07 184419](Captura2.png)
+![Captura 2026-10-07 184419](/Imatges/Captura2.png)
 
 ### Conclusió
 
