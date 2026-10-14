@@ -139,23 +139,23 @@ He creat l'usuari de prova prova24 (el meu número de llista és el 24) i he ini
 
 Directori personal de prova24, amb BIENVENIDA.txt i Documents:
 
-![Captura 2026-10-07 184946](Captura8.png)
+![Captura 2026-10-07 184946](/Imatges/Captura8.png)
 
 Contingut del fitxer de benvinguda:
 
-![Captura 2026-10-07 184958](Captura9.png)
+![Captura 2026-10-07 184958](/Imatges/Captura9.png)
 
 Funcionament de l'alias ll:
 
-![Captura 2026-10-07 185012](Captura10.png)
+![Captura 2026-10-07 185012](/Imatges/Captura10.png)
 
 Per eliminar l'usuari de prova vaig provar deluser -r prova24, però el sistema va donar un error d'opció ambigua, perquè en aquesta versió -r pot ser --remove-home o --remove-all-files:
 
-![Captura 2026-10-07 185353](Captura11.png)
+![Captura 2026-10-07 185353](/Imatges/Captura11.png)
 
 Ho vaig resoldre escrivint l'opció completa --remove-home. Després, grep prova24 /etc/passwd no retorna res, així que l'usuari ja no existeix:
 
-![Captura 2026-10-07 185836](Captura12.png)
+![Captura 2026-10-07 185836](/Imatges/Captura12.png)
 
 ### 2.6 Aplicar els canvis a l'usuari existent
 
