@@ -262,3 +262,58 @@ En iniciar sessió, el sistema diu "You are required to change your password imm
 Els quatre usuaris estan creats amb la configuració demanada i pau_dev ha de canviar la contrasenya en el primer accés.
 
 ---
+
+## Tasca 4. Inspecció del sistema i fitxers de configuració
+
+### 4.1 Comanda id marc_sys
+
+```bash
+id marc_sys
+```
+
+![Captura 2026-10-14 174525](/Imatges/Captura18.png)
+
+### Resposta
+
+- UID: 1005
+- GID (grup principal): 1002 (sysadmin)
+- Grups: 1002 (sysadmin) i 1001 (devs)
+
+Coincideix amb el que es demanava: grup principal sysadmin i grup secundari devs.
+
+### 4.2 Diferència entre /etc/passwd i /etc/shadow
+
+```bash
+grep pau_dev /etc/passwd
+grep pau_dev /etc/shadow
+ls -l /etc/shadow
+```
+
+![Captura 2026-10-14 174645](/Imatges/Captura19.png)
+
+### Resposta
+
+A /etc/passwd hi ha les dades públiques de l'usuari, en aquest ordre: nom, una x (la contrasenya real és a shadow), UID, GID, comentari, directori personal i shell. Per a pau_dev: pau_dev:x:1001:1001:,,,:/home/pau_dev:/bin/bash.
+
+A /etc/shadow hi ha la contrasenya xifrada (el hash, que aquí comença per $y$ i és de l'algorisme yescrypt) i la informació de caducitat: data de l'últim canvi, dies mínims i màxims, dies d'avís, etc.
+
+El fitxer /etc/shadow té els permisos -rw-r----- (640), propietari root i grup shadow. Només l'administrador hi pot llegir i escriure, i el grup shadow només el pot llegir. La resta d'usuaris no hi tenen accés.
+
+Això és així perquè /etc/passwd ha de ser llegible per tothom (programes com ls hi consulten els noms d'usuari). Si els hashes de les contrasenyes estiguessin allà, qualsevol usuari els podria copiar i intentar desxifrar-los. Per això es van separar a /etc/shadow, amb l'accés restringit.
+
+### 4.3 Directori plantilla
+
+```bash
+ls -la /etc/skel
+grep SKEL /etc/adduser.conf /etc/default/useradd
+```
+
+![Captura 2026-10-14 174707](/Imatges/Captura20.png)
+
+![Captura 2026-10-14 174720](/Imatges/Captura21.png)
+
+#### Resposta
+
+El directori plantilla és /etc/skel. Es defineix amb la variable SKEL=/etc/skel als fitxers /etc/adduser.conf (el que fa servir adduser) i /etc/default/useradd (el que fa servir useradd).
+
+---
