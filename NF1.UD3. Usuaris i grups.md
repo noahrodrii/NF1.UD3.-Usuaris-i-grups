@@ -114,6 +114,7 @@ Comprovo que la línia s'ha desat al final del fitxer:
 ```bash
 sudo nano /etc/adduser.conf
 ```
+![Captura 2026-10-07 184713](/Imatges/Captura3.png)
 
 ### Explicació
 
@@ -171,5 +172,93 @@ La primera comanda copia tot el contingut de la plantilla al meu directori perso
 ### Conclusió
 
 Els usuaris nous reben automàticament el fitxer de benvinguda, la carpeta Documents i l'alias ll, amb /bin/bash com a shell. La prova amb prova24 ho confirma.
+
+---
+
+## Tasca 3. Creació i configuració d'usuaris
+
+### Objectiu
+
+Crear els usuaris pau_dev, laura_dev, marc_sys i auditor amb els grups indicats, assignar-los la contrasenya inicial Canviam2026! i obligar pau_dev a canviar-la.
+
+### 3.1 pau_dev i laura_dev amb adduser
+
+#### Comandes utilitzades
+
+```bash
+sudo adduser --ingroup devs --gecos "Pau Garcia" pau_dev
+sudo adduser --ingroup devs --gecos "Laura Martí" laura_dev
+```
+
+### Explicació
+
+adduser és l'assistent interactiu: crea l'usuari, el directori personal (copiant /etc/skel) i demana la contrasenya. L'opció --ingroup indica el grup principal i --gecos el nom real. La contrasenya inicial és Canviam2026!.
+
+A la captura es veu la creació de laura_dev. Per a pau_dev el sistema diu que ja existeix, perquè ja l'havia creat abans amb la mateixa comanda.
+
+![Captura 2026-10-14 173843](/Imatges/Captura13.png)
+
+### 3.2 marc_sys i auditor amb useradd
+
+#### Comandes utilitzades
+
+```bash
+sudo useradd -m -d /home/marc_sys -s /bin/bash -c "Marc Soler" -g sysadmin -G devs marc_sys
+sudo useradd -m -d /home/auditor -s /bin/bash -c "Usuari Auditor" -g auditor auditor
+```
+
+### Explicació
+
+useradd no és interactiu, per això cal indicar cada paràmetre: -m crea el directori personal, -d en defineix la ruta, -s indica la shell, -c el nom real, -g el grup principal i -G els grups secundaris.
+
+![Captura 2026-10-14 173921](/Imatges/Captura14.png)
+
+### 3.3 Contrasenya inicial
+
+#### Comandes utilitzades
+
+```bash
+echo 'marc_sys:Canviam2026!' | sudo chpasswd
+echo 'auditor:Canviam2026!' | sudo chpasswd
+```
+
+### Explicació
+
+useradd crea l'usuari sense contrasenya. chpasswd llegeix parelles usuari:contrasenya per l'entrada estàndard i les assigna sense haver-les de teclejar.
+
+![Captura 2026-10-14 174112](/Imatges/Captura15.png)
+
+### 3.4 Forçar el canvi de contrasenya de pau_dev
+
+#### Comandes utilitzades
+
+```bash
+sudo chage -d 0 pau_dev
+sudo chage -l pau_dev
+```
+
+### Explicació
+
+chage gestiona la caducitat de les contrasenyes. Amb -d 0 la data de l'últim canvi és el dia 0, per tant la contrasenya es considera caducada i s'ha de canviar al pròxim inici de sessió. chage -l mostra l'estat: "se debe cambiar la contraseña".
+
+![Captura 2026-10-14 174337](/Imatges/Captura16.png)
+
+### 3.5 Verificació amb pau_dev
+
+#### Comanda utilitzada
+
+```bash
+su - pau_dev
+```
+
+### Explicació
+
+En iniciar sessió, el sistema diu "You are required to change your password immediately" i demana la contrasenya actual i la nova. Les dues primeres contrasenyes noves es rebutgen amb "You must choose a longer password", fins que n'escric una que compleix els requisits.
+
+![Captura 2026-10-14 174431](/Imatges/Captura17.png)
+
+### Conclusió
+
+Els quatre usuaris estan creats amb la configuració demanada i pau_dev ha de canviar la contrasenya en el primer accés.
 
 ---
