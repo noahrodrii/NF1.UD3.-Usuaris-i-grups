@@ -317,3 +317,62 @@ grep SKEL /etc/adduser.conf /etc/default/useradd
 El directori plantilla és /etc/skel. Es defineix amb la variable SKEL=/etc/skel als fitxers /etc/adduser.conf (el que fa servir adduser) i /etc/default/useradd (el que fa servir useradd).
 
 ---
+
+## Tasca 5. Manteniment, bloqueig i eliminació
+
+### 5.1 Bloquejar pau_dev
+
+### Objectiu
+
+Impedir temporalment que pau_dev iniciï sessió mentre és de vacances.
+
+### Comandes utilitzades
+
+```bash
+sudo usermod -L pau_dev
+grep pau_dev /etc/shadow
+```
+
+### Explicació
+
+usermod -L (lock) afegeix un signe d'exclamació ! davant del hash de la contrasenya a /etc/shadow. Així el hash deixa de ser vàlid i no es pot entrar amb contrasenya, però l'usuari i les seves dades es conserven.
+
+A la captura es veu pau_dev:!$y$j9T$..., amb el ! davant del hash:
+
+![Captura 2026-10-14 174810](/Imatges/Captura22.png)
+
+### 5.2 Desbloquejar pau_dev
+
+#### Comandes utilitzades
+
+```bash
+sudo usermod -U pau_dev
+grep pau_dev /etc/shadow
+```
+
+### Explicació
+
+usermod -U (unlock) treu el ! i el hash torna a ser vàlid. A la captura el hash torna a començar directament per $y$, sense el !:
+
+![Captura 2026-10-14 174859](/Imatges/Captura23.png)
+
+### 5.3 Eliminar l'usuari auditor
+
+#### Comandes utilitzades
+
+```bash
+sudo userdel -r auditor
+grep auditor /etc/passwd
+```
+
+### Explicació
+
+userdel -r elimina l'usuari, el seu directori personal i la seva bústia de correu. L'avís "mail spool (/var/mail/auditor) not found" només vol dir que aquest usuari no tenia bústia creada, no és un error. grep no retorna cap línia, així que l'usuari ja no existeix.
+
+![Captura 2026-10-14 174942](/Imatges/Captura24.png)
+
+### Conclusió
+
+Bloquejar i desbloquejar un compte es fa amb usermod -L i usermod -U, i es comprova a /etc/shadow. L'usuari auditor s'ha eliminat completament.
+
+---
