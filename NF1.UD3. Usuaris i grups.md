@@ -376,3 +376,65 @@ userdel -r elimina l'usuari, el seu directori personal i la seva bústia de corr
 Bloquejar i desbloquejar un compte es fa amb usermod -L i usermod -U, i es comprova a /etc/shadow. L'usuari auditor s'ha eliminat completament.
 
 ---
+
+## Tasca 6. Personalització de l'entorn d'usuari
+
+### Objectiu
+
+Instal·lar la shell fish i posar-la com a shell per defecte de laura_dev.
+
+### 6.1 Instal·lació de fish
+
+#### Comandes utilitzades
+
+```bash
+sudo apt update
+sudo apt install fish
+which fish
+```
+
+### Explicació
+
+apt install fish instal·la el paquet i which fish mostra on ha quedat l'executable: /usr/bin/fish. Aquesta és la ruta que he d'indicar quan canviï la shell.
+
+![Captura 2026-10-14 175116](/Imatges/Captura25.png)
+
+### 6.2 Canviar la shell de laura_dev
+
+### Comandes utilitzades
+
+```bash
+sudo usermod -s /usr/bin/fish laura_dev
+grep laura_dev /etc/passwd
+```
+
+### Explicació
+
+usermod -s canvia la shell de l'usuari, que es guarda al darrer camp de la seva línia de /etc/passwd. També es podria fer amb chsh -s. A la captura l'últim camp és ara /usr/bin/fish.
+
+![Captura 2026-10-14 175147](/Imatges/Captura26.png)
+
+### 6.3 Comprovació
+
+#### Comandes utilitzades
+
+```bash
+su - laura_dev
+echo $SHELL
+```
+
+### Explicació
+
+En iniciar sessió com a laura_dev apareix el missatge de benvinguda de fish i el prompt canvia d'aspecte. echo $SHELL mostra /usr/bin/fish.
+
+![Captura 2026-10-14 175245](/Imatges/Captura27.png)
+
+### Conclusió
+
+laura_dev utilitza ara fish. Cal tenir en compte que fish no és compatible amb l'estàndard POSIX, per tant els scripts escrits per a Bash poden no funcionar-hi.
+
+---
+
+## Conclusió general
+
+He creat els grups i usuaris demanats, he personalitzat /etc/skel perquè els usuaris nous tinguin fitxer de benvinguda, carpeta Documents i l'alias ll, he forçat el canvi de contrasenya de pau_dev, he inspeccionat /etc/passwd, /etc/shadow i /etc/group, he bloquejat i desbloquejat un compte, he eliminat l'usuari auditor i he canviat la shell de laura_dev a fish.
